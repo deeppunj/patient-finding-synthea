@@ -21,6 +21,7 @@ def main():
     # --- 1. diagnostic delay ---
     settings.run_sql_file("4_diagnostic_delay.sql")
     journey = settings.query_to_df("SELECT * FROM diagnostic_delay")
+    journey.to_csv(os.path.join(reports, "diagnostic_delay.csv"), index=False)  # for the dashboard
 
     n_new = len(journey)
 

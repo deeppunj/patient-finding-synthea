@@ -40,7 +40,40 @@ flowchart LR
 
 ## Results
 
-See [reports/summary.md](reports/summary.md) and the charts in `reports/`.
+Test years 2024-2025: 13,769 patient snapshots, of which 75 (0.5%) were diagnosed with kidney disease in the next 12 months.
+
+| Model | PR-AUC | ROC-AUC | Found in top 5% |
+|---|---|---|---|
+| Logistic regression | 0.030 | 0.872 | 27% |
+| Gradient boosting | 0.028 | 0.863 | 24% |
+| Random guess | 0.005 | 0.5 | 5% |
+
+Logistic regression is about 6x better than random on PR-AUC. Gradient boosting didn't do better,
+so I kept the simpler model, which is also easier to explain.
+
+Reviewing the top 10% of patients by risk score finds 37 of the 75 future cases (49%), the top 20% finds 87%.
+
+The strongest signal by far is a high blood pressure diagnosis, followed by the urine albumin/creatinine
+ratio, number of medicines and systolic blood pressure.
+
+Patient journey: 42% of newly diagnosed patients (110 of 265) had an abnormal kidney test
+(eGFR < 60 or creatinine > 1.3) a median of 55 months before the diagnosis.
+
+Full summary: [reports/summary.md](reports/summary.md)
+
+### Dashboard
+![Dashboard](reports/dashboard.png)
+
+Streamlit dashboard (`streamlit run app.py`). The slider sets how many patients a team can review;
+the numbers and the red line on the curve show how many future cases that finds.
+Patients are listed by risk rank instead of raw score, because class weighting pushes the
+predicted probabilities too high (the order is still right).
+
+### MLflow
+![MLflow runs](reports/mlflow.png)
+
+Both models logged in MLflow with parameters, metrics and the trained model, so runs can be compared
+and reproduced (`python open_mlflow.py`).
 
 ## How to run
 
