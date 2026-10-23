@@ -3,9 +3,8 @@
 Can routine health records flag adults who will be **diagnosed with chronic kidney disease in the next
 12 months**, so they can be tested and treated earlier?
 
-[The data is synthetic, made with [Synthea](https://github.com/synthetichealth/synthea), so no real patients
+The data is synthetic, made with [Synthea](https://github.com/synthetichealth/synthea), so no real patients
 are involved. It has the same structure as real health records: patients, visits, diagnoses, lab results and medicines.
-]
 
 **Short answer: partly yes.** On synthetic data, a simple model ranks patients well enough to be useful,
 but it can't pick out individual patients with high certainty.
@@ -40,6 +39,8 @@ flowchart LR
 | 4 | `step4_insights.py` | Diagnostic delay, cases found per review effort, `reports/summary.md` |
 | - | `run_all.py` | Steps 1-4 in order |
 | - | `app.py` | Streamlit dashboard |
+| - | `open_mlflow.py` | Opens the MLflow page in the browser |
+| - | `make_study_design.py` | Draws the study design picture below |
 | - | `notebooks/explore.ipynb` | First look at the data |
 | - | `tests/test_no_leakage.py` | Checks that no future information leaks into the features |
 
@@ -105,7 +106,7 @@ and reproduced (`python open_mlflow.py`).
    ```
 4. `python run_all.py`
 5. `pytest`
-6. `mlflow ui --backend-store-uri sqlite:///mlflow.db` and `streamlit run app.py`
+6. `python open_mlflow.py` (MLflow runs) and `streamlit run app.py` (dashboard)
 
 ## Limitations
 - Synthetic data follows rules, so it is cleaner than real records. The method transfers; the numbers do not.
