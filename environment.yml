@@ -1,0 +1,17 @@
+# Conda environment for the project.
+# Create it with:   conda env create -f environment.yml
+# Then activate:    conda activate patientfinding
+name: patientfinding
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - openjdk>=17        # only needed to run Synthea (the data generator)
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - psycopg2          # talks to PostgreSQL
+  - mlflow>=3
+  - pytest
+  - jupyter
+  - streamlit

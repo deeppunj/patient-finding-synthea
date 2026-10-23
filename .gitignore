@@ -1,0 +1,15 @@
+# Synthea jar and the data it generates (too big for GitHub, and easy to regenerate)
+synthea.jar
+output/
+
+# MLflow tracking database and saved models
+mlflow.db
+mlruns/
+mlartifacts/
+
+# Python / IDE clutter
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+.idea/
+.DS_Store
