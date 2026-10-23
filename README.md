@@ -3,8 +3,23 @@
 Can routine health records flag adults who will be **diagnosed with chronic kidney disease in the next
 12 months**, so they can be tested and treated earlier?
 
-The data is synthetic, made with [Synthea](https://github.com/synthetichealth/synthea), so no real patients
+[The data is synthetic, made with [Synthea](https://github.com/synthetichealth/synthea), so no real patients
 are involved. It has the same structure as real health records: patients, visits, diagnoses, lab results and medicines.
+]
+
+**Short answer: partly yes.** On synthetic data, a simple model ranks patients well enough to be useful,
+but it can't pick out individual patients with high certainty.
+
+- Reviewing the top 10% of patients by risk score finds about half (49%) of next year's kidney
+  patients. A random 10% would find about 10%.
+- Most of the signal comes from information already in the record: a high blood pressure diagnosis,
+  protein in the urine (albumin/creatinine ratio) and blood pressure readings.
+- 42% of newly diagnosed patients had an abnormal kidney test a median of 55 months before diagnosis.
+  A simple rule ("abnormal test, no diagnosis yet -> follow up") would already catch many of them.
+- Precision stays low (about 3% of flagged patients get the diagnosis), so this works for prioritising
+  who to test, not as a diagnosis.
+- The data is synthetic, so this needs checking on real health records before any real use.
+
 
 ## How it works
 
