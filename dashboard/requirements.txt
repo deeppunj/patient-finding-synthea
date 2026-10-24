@@ -1,0 +1,4 @@
+# only what the dashboard needs (streamlit cloud uses this file, not environment.yml)
+streamlit
+pandas
+altair

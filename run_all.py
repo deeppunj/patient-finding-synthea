@@ -25,4 +25,4 @@ step3_train_model.main()
 print("\n=== Step 4: insights ===")
 step4_insights.main()
 
-print("\nDone. Next: mlflow ui --backend-store-uri sqlite:///mlflow.db   and   streamlit run app.py")
+print("\nDone. Next: mlflow ui --backend-store-uri sqlite:///mlflow.db   and   streamlit run dashboard/app.py")

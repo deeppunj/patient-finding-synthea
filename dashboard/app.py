@@ -1,9 +1,12 @@
 # streamlit dashboard, reads the csv files from reports/ (run run_all.py first)
-# start with: streamlit run app.py   -> opens http://localhost:8501
+# start with: streamlit run dashboard/app.py   -> opens http://localhost:8501
 # streamlit reruns the whole script every time the slider moves
 #
 # charts are drawn with altair (comes with streamlit) instead of showing the matplotlib pngs,
 # so they follow the light/dark theme, resize with the window and show values on hover
+#
+# it's in its own folder with its own requirements.txt, so streamlit cloud only installs
+# streamlit + pandas + altair (and not the whole conda environment.yml of the project)
 
 import os
 
@@ -11,9 +14,8 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-import settings
-
-reports = settings.REPORTS_DIR
+# reports/ is one folder up from this file
+reports = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "reports")
 
 # readable names for the feature chart
 NICE_NAMES = {
@@ -133,7 +135,8 @@ with left:
 
     bars = alt.Chart(imp).mark_bar().encode(
         x=alt.X("percent:Q", title="% of model performance lost when the feature is shuffled"),
-        y=alt.Y("name:N", sort="-x", title=None),   # sort="-x": biggest bar on top
+        y=alt.Y("name:N", sort="-x", title=None,   # sort="-x": biggest bar on top
+                axis=alt.Axis(labelLimit=300)),     # default cuts long names off
         tooltip=[alt.Tooltip("name:N", title="Feature"),
                  alt.Tooltip("percent:Q", title="% lost", format=".1f")],
     )
@@ -150,7 +153,12 @@ with right:
     })
     table["Model"] = table["Model"].str.replace("_", " ").str.capitalize()
     table["Found in top 5%"] = (100 * table["Found in top 5%"]).round(0).astype(int).astype(str) + "%"
-    st.dataframe(table.round(3), hide_index=True)
+    # 3 decimals everywhere, otherwise 0.030 shows as 0.03 next to 0.028
+    st.dataframe(table, hide_index=True, column_config={
+        "PR-AUC": st.column_config.NumberColumn(format="%.3f"),
+        "PR-AUC random guess": st.column_config.NumberColumn(format="%.3f"),
+        "ROC-AUC": st.column_config.NumberColumn(format="%.3f"),
+    })
     st.caption("PR-AUC is the main metric because only 0.5% of patients are positive.")
 
 st.divider()
@@ -159,6 +167,14 @@ st.divider()
 # row 3: the review list
 # ---------------------------------------------------------------
 st.subheader(f"Patients to review ({n_review:,}), highest risk first")
+
+# show the rank instead of the raw score.
+# class_weight="balanced" pushes all probabilities up, so the top patients all get ~1.00.
+# the order is still right (that's what pr-auc measures), but the score is not a real probability
+# (would need calibration for that). rank = position in the sorted list as % of all test patients
+top = top.copy()
+top["risk_rank"] = ["top {:.1f}%".format(100 * (i + 1) / n_patients) for i in range(len(top))]
+top = top.drop(columns=["risk_score"])
 
 review = top.rename(columns={
     "patient_id": "Patient",
@@ -169,7 +185,7 @@ review = top.rename(columns={
     "last_egfr": "eGFR",
     "last_creatinine": "Creatinine",
     "last_systolic_bp": "Systolic BP",
-    "risk_score": "Risk score",
+    "risk_rank": "Risk rank",
 })
 review["High blood pressure"] = review["High blood pressure"].map({1: "yes", 0: "no"})
 review["Diagnosed within 12 months"] = review["Diagnosed within 12 months"].map({1: "yes", 0: "no"})
@@ -178,10 +194,11 @@ st.dataframe(
     review,
     hide_index=True,
     column_config={
-        "Risk score": st.column_config.ProgressColumn("Risk score", min_value=0, max_value=1, format="%.2f"),
         "eGFR": st.column_config.NumberColumn(format="%.0f"),
         "Creatinine": st.column_config.NumberColumn(format="%.1f"),
         "Systolic BP": st.column_config.NumberColumn(format="%.0f"),
     },
 )
-st.caption("'Diagnosed within 12 months' is only known here because this is test data. In real use it would be empty.")
+st.caption("Risk rank = position in the list of all test patients, sorted by risk score. "
+           "The raw scores are only used for ranking: class weighting makes them too high to read as probabilities. "
+           "'Diagnosed within 12 months' is only known here because this is test data.")

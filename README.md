@@ -38,7 +38,7 @@ flowchart LR
 | 3 | `step3_train_model.py` | Logistic regression vs gradient boosting, PR-AUC, MLflow |
 | 4 | `step4_insights.py` | Diagnostic delay, cases found per review effort, `reports/summary.md` |
 | - | `run_all.py` | Steps 1-4 in order |
-| - | `app.py` | Streamlit dashboard |
+| - | `dashboard/app.py` | Streamlit dashboard |
 | - | `open_mlflow.py` | Opens the MLflow page in the browser |
 | - | `make_study_design.py` | Draws the study design picture below |
 | - | `notebooks/explore.ipynb` | First look at the data |
@@ -80,7 +80,7 @@ Full summary: [reports/summary.md](reports/summary.md)
 ### Dashboard
 ![Dashboard](reports/dashboard.png)
 
-Streamlit dashboard (`streamlit run app.py`). The slider sets how many patients a team can review;
+Streamlit dashboard (`streamlit run dashboard/app.py`). The slider sets how many patients a team can review;
 the numbers and the red line on the curve show how many future cases that finds.
 Patients are listed by risk rank instead of raw score, because class weighting pushes the
 predicted probabilities too high (the order is still right).
@@ -106,7 +106,7 @@ and reproduced (`python open_mlflow.py`).
    ```
 4. `python run_all.py`
 5. `pytest`
-6. `python open_mlflow.py` (MLflow runs) and `streamlit run app.py` (dashboard)
+6. `python open_mlflow.py` (MLflow runs) and `streamlit run dashboard/app.py` (dashboard)
 
 ## Limitations
 - Synthetic data follows rules, so it is cleaner than real records. The method transfers; the numbers do not.
