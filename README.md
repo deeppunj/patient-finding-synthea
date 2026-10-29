@@ -66,7 +66,7 @@ Test years 2024-2025: 13,769 patient snapshots, of which 75 (0.5%) were diagnose
 | Model | PR-AUC | ROC-AUC | Found in top 5% |
 |---|---|---|---|
 | Logistic regression | 0.030 | 0.872 | 27% |
-| Gradient boosting | 0.028 | 0.863 | 24% |
+| Gradient boosting | 0.024 | 0.870 | 23% |
 | Random guess | 0.005 | 0.5 | 5% |
 
 Logistic regression is about 6x better than random on PR-AUC. Gradient boosting didn't do better,
