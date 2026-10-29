@@ -115,7 +115,7 @@ up to that day, nothing more. A yes/no label throws that information away.
 |---|---|---|---|---|
 | Step 3 logistic regression (yes/no label) | 0.030 | 0.872 | 27% | 49% |
 | Survival, logistic | 0.026 | 0.878 | 29% | 51% |
-| Survival, gradient boosting | 0.024 | 0.868 | 24% | 47% |
+| Survival, gradient boosting | 0.024 | 0.866 | 25% | 45% |
 | Random guess | 0.005 | 0.5 | 5% | 10% |
 
 At 12 months the survival models do about the same as the yes/no model. With 75 cases the differences are
