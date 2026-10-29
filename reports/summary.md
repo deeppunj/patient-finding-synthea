@@ -21,7 +21,7 @@ Only 75 of 13,769 test records (0.5%) were diagnosed in the next 12 months.
 
 Best model: logistic_regression, PR-AUC 0.030 against 0.005 for a random guess.
 
-Strongest signals: has_hypertension, last_albumin_creatinine_ratio, n_medications, last_systolic_bp, has_prediabetes.
+Strongest signals: has_hypertension, last_albumin_creatinine_ratio, n_medications, last_systolic_bp, min_egfr.
 
 ## Suggestions
 1. Start with patients who already have an abnormal kidney test but no diagnosis: a simple rule finds them.

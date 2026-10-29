@@ -25,6 +25,10 @@ MLFLOW_URI = "sqlite:///" + os.path.join(PROJECT_DIR, "mlflow.db")
 # snapshots before this date = training, from this date = test
 TEST_FROM = "2024-01-01"
 
+# end of the synthea data (the -e 20261001 in the readme). nothing is known after this day,
+# so step 5 (survival analysis) stops following the test patients here
+DATA_END = "2026-10-01"
+
 
 def run_sql_file(file_name):
     # read the .sql file and run it on the database
